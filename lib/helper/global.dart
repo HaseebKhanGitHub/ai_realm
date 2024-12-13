@@ -10,5 +10,5 @@ late Size mq;
 //  Google Gemini API Key - https://aistudio.google.com/app/apikey
 //  You need to Update it in your Appwrite Project or comment appwrite code and hardcord key here.
 
-// String apiKey = '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';
+// String apiKey = '';
 String apiKey = '';
