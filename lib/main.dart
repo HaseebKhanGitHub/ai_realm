@@ -1,4 +1,5 @@
-import 'package:ai_realm/homeScreen.dart';
+import 'package:ai_realm/screens/SplashScreen.dart';
+import 'package:ai_realm/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,8 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: homeScreen(),
+      home: SplashScreen(),
     );
   }
 }
