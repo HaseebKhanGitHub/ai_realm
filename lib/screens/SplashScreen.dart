@@ -1,5 +1,7 @@
 import 'package:ai_realm/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 
 import '../helper/global.dart';
@@ -19,10 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     //wait for some time on splash & then move to next screen
-    /*Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Get.off(() =>
-      Pref.showOnboarding ? const OnboardingScreen() : const homeScreen());
-    });*/
+     const homeScreen());
+    });
   }
 
   @override
