@@ -1,6 +1,7 @@
 
 
 import 'package:ai_realm/helper/global.dart';
+import 'package:ai_realm/model/home_type.dart';
 import 'package:ai_realm/widgets/home_card.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ IconButton(onPressed: (){}, icon: Icon(Icons.brightness_4_outlined,color: Colors
         padding: EdgeInsets.symmetric(
             horizontal: mq.width * .04, vertical: mq.height * .015),
 
-        children: [home_card()],),
+        children: homeType.values.map((e)=>home_card(hometype: e,)).toList(),),
     );
   }
 }
