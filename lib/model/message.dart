@@ -1,3 +1,4 @@
+/*
 class Message {
   String msg;
   final MessageType msgType;
@@ -6,3 +7,4 @@ class Message {
 }
 
 enum MessageType { user, bot }
+*/

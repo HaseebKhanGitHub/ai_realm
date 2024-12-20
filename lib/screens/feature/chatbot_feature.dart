@@ -10,94 +10,126 @@ class ChatbotFeature extends StatefulWidget {
 
 class _ChatbotFeatureState extends State<ChatbotFeature> {
   final TextEditingController fieldController = TextEditingController();
-  TextEditingController btnController = TextEditingController();
-  String output = "Text Output";
+  final List<Map<String, String>> messages =
+      []; // List to hold user and bot messages
 
   void geminiOutput() async {
     if (fieldController.text.isEmpty) {
       return;
     }
+
+    final userInput = fieldController.text;
+
+    setState(() {
+      // Add user message to the list
+      messages.add({"sender": "user", "message": userInput});
+      fieldController.text = '';
+    });
+
     final model = GenerativeModel(
       model: 'gemini-1.5-flash-latest',
       apiKey: "AIzaSyDHALym6iq5EmFIODwFE1UzEwEmXY4GLOo",
     );
 
-    final content = [Content.text(fieldController.text)];
+    final content = [Content.text(userInput)];
     final response = await model.generateContent(content);
 
-    print(response.text);
-
     setState(() {
-      output = response.text!;
+      // Add bot response to the list
+      messages
+          .add({"sender": "bot", "message": response.text ?? "No response"});
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Chat With AI",
-            style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
+      appBar: AppBar(
+        title: Text(
+          "Chat With AI",
+          style: TextStyle(
+            color: Colors.blue,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          elevation: 2,
         ),
-
-        //send message field & btn
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(children: [
-            //text input field
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 2,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          children: [
+            // Display messages above the input field
             Expanded(
-                child: TextFormField(
-              controller: fieldController,
-              textAlign: TextAlign.center,
-              onTapOutside: (e) => FocusScope.of(context).unfocus(),
-              decoration: InputDecoration(
-                  fillColor: Theme.of(context).scaffoldBackgroundColor,
-                  filled: true,
-                  isDense: true,
-                  hintText: 'Ask me anything you want...',
-                  hintStyle: const TextStyle(fontSize: 14),
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)))),
-            )),
+              child: ListView.builder(
+                reverse: true,
+                // Makes sure the latest message appears at the bottom
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final message = messages[messages.length - index - 1];
+                  final isUser = message["sender"] == "user";
 
-            //for adding some space
-            const SizedBox(width: 8),
-
-            //send button
-            CircleAvatar(
-              radius: 24,
-              backgroundColor: Colors.blue,
-              // backgroundColor: Theme.of(context).buttonColor,
-              child: IconButton(
-                onPressed: geminiOutput,
-                icon: const Icon(Icons.rocket_launch_rounded,
-                    color: Colors.white, size: 28),
+                  return Align(
+                    alignment:
+                        isUser ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: isUser ? Colors.blue[100] : Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        message["message"]!,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  );
+                },
               ),
-            )
-          ]),
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              children: [
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Text(output),
-                ))
-              ],
             ),
-          ),
-        ));
+            // Input field and send button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  // Text input field
+                  Expanded(
+                    child: TextFormField(
+                      controller: fieldController,
+                      textAlign: TextAlign.center,
+                      onTapOutside: (e) => FocusScope.of(context).unfocus(),
+                      decoration: InputDecoration(
+                        fillColor: Theme.of(context).scaffoldBackgroundColor,
+                        filled: true,
+                        isDense: true,
+                        hintText: 'Ask me anything you want...',
+                        hintStyle: const TextStyle(fontSize: 14),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // Send button
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.blue,
+                    child: IconButton(
+                      onPressed: geminiOutput,
+                      icon: const Icon(Icons.rocket_launch_rounded,
+                          color: Colors.white, size: 28),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
