@@ -1,3 +1,4 @@
+import 'package:ai_realm/helper/global.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -11,11 +12,10 @@ class ChatbotFeature extends StatefulWidget {
 class _ChatbotFeatureState extends State<ChatbotFeature> {
   //new codde
   final TextEditingController fieldController = TextEditingController();
-  final List<Map<String, String>> messages =
-      []; // List to hold user and bot messages
+  final List<Map<String, String>> messages = [];
 
   void geminiOutput() async {
-    if (fieldController.text.isEmpty) {
+    if (fieldController.text.trim().isEmpty) {
       return;
     }
 
@@ -64,6 +64,7 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
           children: [
             // Display messages above the input field
             Expanded(
+              flex: 7,
               child: ListView.builder(
                 reverse: true,
                 // Makes sure the latest message appears at the bottom
@@ -92,40 +93,45 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
               ),
             ),
             // Input field and send button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  // Text input field
-                  Expanded(
-                    child: TextFormField(
-                      controller: fieldController,
-                      textAlign: TextAlign.center,
-                      onTapOutside: (e) => FocusScope.of(context).unfocus(),
-                      decoration: InputDecoration(
-                        fillColor: Theme.of(context).scaffoldBackgroundColor,
-                        filled: true,
-                        isDense: true,
-                        hintText: 'Ask me anything you want...',
-                        hintStyle: const TextStyle(fontSize: 14),
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    // Text input field
+                    Expanded(
+                      child: TextFormField(
+                        controller: fieldController,
+                        textAlign: TextAlign.center,
+                        onTapOutside: (e) => FocusScope.of(context).unfocus(),
+                        decoration: InputDecoration(
+                          fillColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                          filled: true,
+                          isDense: true,
+                          hintText: 'Ask me anything you want...',
+                          hintStyle: const TextStyle(fontSize: 14),
+                          border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50)),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  // Send button
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundColor: Colors.blue,
-                    child: IconButton(
-                      onPressed: geminiOutput,
-                      icon: const Icon(Icons.rocket_launch_rounded,
-                          color: Colors.white, size: 28),
+                    const SizedBox(width: 8),
+                    // Send button
+                    CircleAvatar(
+                      radius: 24,
+                      backgroundColor: Colors.blue,
+                      child: IconButton(
+                        onPressed: geminiOutput,
+                        icon: const Icon(Icons.rocket_launch_rounded,
+                            color: Colors.white, size: 28),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
