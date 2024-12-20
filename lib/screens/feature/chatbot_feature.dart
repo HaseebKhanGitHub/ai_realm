@@ -1,31 +1,24 @@
-import 'package:ai_realm/helper/global.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:get/get.dart'; // Import GetX
 
-class ChatbotFeature extends StatefulWidget {
-  const ChatbotFeature({super.key});
+// Define a controller to manage state
+class ChatController extends GetxController {
+  // Observable list to store messages
+  var messages = <Map<String, String>>[].obs;
+  final TextEditingController controller = TextEditingController();
 
-  @override
-  State<ChatbotFeature> createState() => _ChatbotFeatureState();
-}
-
-class _ChatbotFeatureState extends State<ChatbotFeature> {
-  //new codde
-  final TextEditingController fieldController = TextEditingController();
-  final List<Map<String, String>> messages = [];
-
+  // Function to send user message and get response
   void geminiOutput() async {
-    if (fieldController.text.trim().isEmpty) {
+    if (controller.text.trim().isEmpty) {
       return;
     }
 
-    final userInput = fieldController.text;
+    final userInput = controller.text;
 
-    setState(() {
-      // Add user message to the list
-      messages.add({"sender": "user", "message": userInput});
-      fieldController.text = '';
-    });
+    // Add user message
+    messages.add({"sender": "user", "message": userInput});
+    controller.text = '';
 
     final model = GenerativeModel(
       model: 'gemini-1.5-flash-latest',
@@ -35,15 +28,20 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
     final content = [Content.text(userInput)];
     final response = await model.generateContent(content);
 
-    setState(() {
-      // Add bot response to the list
-      messages
-          .add({"sender": "bot", "message": response.text ?? "No response"});
-    });
+    // Add bot response
+    messages
+        .add({"sender": "bot", "message": response.text ?? "No response"});
   }
+}
+
+class ChatbotFeature extends StatelessWidget {
+  const ChatbotFeature({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Instantiate the controller using GetX
+    final ChatController chatController = Get.put(ChatController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -65,31 +63,36 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
             // Display messages above the input field
             Expanded(
               flex: 7,
-              child: ListView.builder(
-                reverse: true,
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final message = messages[messages.length - index - 1];
-                  final isUser = message["sender"] == "user";
+              child: Obx(() {
+                // Use Obx to listen to messages list changes
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: chatController.messages.length,
+                  itemBuilder: (context, index) {
+                    final message = chatController
+                        .messages[chatController.messages.length - index - 1];
+                    final isUser = message["sender"] == "user";
 
-                  return Align(
-                    alignment:
-                        isUser ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: isUser ? Colors.blue[100] : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10),
+                    return Align(
+                      alignment: isUser
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isUser ? Colors.blue[100] : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          message["message"]!,
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
-                      child: Text(
-                        message["message"]!,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ),
             // Input field and send button
             Expanded(
@@ -101,7 +104,7 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
                     // Text input field
                     Expanded(
                       child: TextFormField(
-                        controller: fieldController,
+                        controller: chatController.controller,
                         textAlign: TextAlign.center,
                         onTapOutside: (e) => FocusScope.of(context).unfocus(),
                         decoration: InputDecoration(
@@ -125,7 +128,8 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
                       radius: 24,
                       backgroundColor: Colors.blue,
                       child: IconButton(
-                        onPressed: geminiOutput,
+                        onPressed: chatController.geminiOutput,
+                        // Use controller's method
                         icon: const Icon(Icons.rocket_launch_rounded,
                             color: Colors.white, size: 28),
                       ),

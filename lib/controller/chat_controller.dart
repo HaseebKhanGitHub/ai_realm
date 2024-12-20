@@ -1,38 +1,37 @@
-import 'package:flutter/material.dart';
+/*
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ChatController extends GetxController {
-  final textC = TextEditingController();
+  // Observable list to store messages
+  var messages = <Map<String, String>>[].obs;
+  final TextEditingController fieldController = TextEditingController();
 
-  final scrollC = ScrollController();
-
-  final list = <Message>[
-    Message(msg: 'Hello, How can I help you?', msgType: MessageType.bot)
-  ].obs;
-
-  Future<void> askQuestion() async {
-    if (textC.text.trim().isNotEmpty) {
-      //user
-      list.add(Message(msg: textC.text, msgType: MessageType.user));
-      list.add(Message(msg: '', msgType: MessageType.bot));
-      _scrollDown();
-
-      final res = await APIs.getAnswer(textC.text);
-
-      //ai bot
-      list.removeLast();
-      list.add(Message(msg: res, msgType: MessageType.bot));
-      _scrollDown();
-
-      textC.text = '';
-    } else {
-      MyDialog.info('Ask Something!');
+  // Function to send user message and get response
+  void geminiOutput() async {
+    if (fieldController.text.trim().isEmpty) {
+      return;
     }
-  }
 
-  //for moving to end message
-  void _scrollDown() {
-    scrollC.animateTo(scrollC.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    final userInput = fieldController.text;
+
+    // Add user message
+    messages.add({"sender": "user", "message": userInput});
+    fieldController.text = '';
+
+    final model = GenerativeModel(
+      model: 'gemini-1.5-flash-latest',
+      apiKey: "AIzaSyDHALym6iq5EmFIODwFE1UzEwEmXY4GLOo",
+    );
+
+    final content = [Content.text(userInput)];
+    final response = await model.generateContent(content);
+
+    // Add bot response
+    messages
+        .add({"sender": "bot", "message": response.text ?? "No response"});
   }
 }
+*/
