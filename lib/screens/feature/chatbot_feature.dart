@@ -67,7 +67,6 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
               flex: 7,
               child: ListView.builder(
                 reverse: true,
-                // Makes sure the latest message appears at the bottom
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
                   final message = messages[messages.length - index - 1];
@@ -111,7 +110,8 @@ class _ChatbotFeatureState extends State<ChatbotFeature> {
                           filled: true,
                           isDense: true,
                           hintText: 'Ask me anything you want...',
-                          hintStyle: const TextStyle(fontSize: 14),
+                          hintStyle: const TextStyle(
+                              fontSize: 14, color: Colors.grey),
                           border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50)),
