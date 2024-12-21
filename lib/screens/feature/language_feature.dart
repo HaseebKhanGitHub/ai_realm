@@ -19,7 +19,6 @@ class _LanguageFeatureState extends State<LanguageFeature> {
   Future<void> translateText() async {
     final translated = await translator.translate(inputText,
         from: inputLanguage, to: outputLanguage);
-
     setState(() {
       outputController.text = translated.text;
     });
@@ -69,7 +68,6 @@ class _LanguageFeatureState extends State<LanguageFeature> {
                       inputText = value;
                     });
                   },
-
                   maxLines: 10,
                 ),
                 //  SizedBox(height: 20),
@@ -134,7 +132,7 @@ class _LanguageFeatureState extends State<LanguageFeature> {
 
                   maxLines: 10,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 60),
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
