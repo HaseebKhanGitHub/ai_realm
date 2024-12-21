@@ -21,6 +21,7 @@ dependencies:
   google_generative_ai: ^0.4.6
   animated_text_kit: ^4.2.2
   stability_image_generation: ^0.0.4
+  translator: ^1.0.3+1
 
 
   # The following adds the Cupertino Icons font to your application.
