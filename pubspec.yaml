@@ -20,6 +20,7 @@ dependencies:
   flutter_animate: ^4.5.2
   google_generative_ai: ^0.4.6
   animated_text_kit: ^4.2.2
+  stability_image_generation: ^0.0.4
 
 
   # The following adds the Cupertino Icons font to your application.
