@@ -35,6 +35,6 @@ extension myHomeType on homeType {
   VoidCallback get onTap => switch (this) {
         homeType.aiChatbot => () => Get.to(() => ChatbotFeature()),
         homeType.aiImgage => () => Get.to(() => ImageFeature()),
-        homeType.aiTranslator => () => Get.to(() => const LanguageFeature()),
+        homeType.aiTranslator => () => Get.to(() => LanguageFeature()),
       };
 }
