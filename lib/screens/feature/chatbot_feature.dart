@@ -1,8 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:get/get.dart'; // Import GetX
 
-// Define a controller to manage state
 class ChatController extends GetxController {
   // Observable list to store messages
   var messages = <Map<String, String>>[].obs;
@@ -29,6 +29,7 @@ class ChatController extends GetxController {
     final response = await model.generateContent(content);
 
     // Add bot response
+
     messages
         .add({"sender": "bot", "message": response.text ?? "No response"});
   }
@@ -72,6 +73,7 @@ class ChatbotFeature extends StatelessWidget {
                     final message = chatController
                         .messages[chatController.messages.length - index - 1];
                     final isUser = message["sender"] == "user";
+                    final isLastBotMessage = !isUser && index == 0;
 
                     return Align(
                       alignment: isUser
@@ -84,10 +86,24 @@ class ChatbotFeature extends StatelessWidget {
                           color: isUser ? Colors.blue[100] : Colors.grey[200],
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(
-                          message["message"]!,
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        child: isUser
+                            ? Text(
+                                message["message"]!,
+                                style: TextStyle(fontSize: 16),
+                              )
+                            : isLastBotMessage
+                                ? AnimatedTextKit(
+                                    animatedTexts: [
+                                      TypewriterAnimatedText(
+                                          message["message"]!,
+                                          speed: Duration(milliseconds: 50))
+                                    ],
+                                    totalRepeatCount: 1,
+                                  )
+                                : Text(
+                                    message["message"]!,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
                       ),
                     );
                   },
