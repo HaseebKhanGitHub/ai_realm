@@ -1,4 +1,5 @@
 import 'package:ai_realm/helper/global.dart';
+import 'package:ai_realm/helper/myDialog.dart';
 import 'package:ai_realm/widgets/custom_loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -134,11 +135,9 @@ class _ImageFeatureState extends State<ImageFeature> {
                           true; // Set the flag to indicate images are being generated
                     });
                   } else {
-                    // Log a message if the query is empty
-                    if (kDebugMode) {
-                      print('Query is empty !!');
-                    }
-                  }
+                    myDialog.info(
+                        "Please provide some details for image generation");
+                  } ///////////////////////
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,

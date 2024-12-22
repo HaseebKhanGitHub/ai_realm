@@ -1,3 +1,4 @@
+import 'package:ai_realm/helper/myDialog.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -11,7 +12,7 @@ class ChatController extends GetxController {
   // Function to send user message and get response
   void geminiOutput() async {
     if (controller.text.trim().isEmpty) {
-      return;
+      return myDialog.info("Please write something");
     }
 
     final userInput = controller.text;
