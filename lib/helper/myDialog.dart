@@ -1,4 +1,5 @@
 import 'package:ai_realm/main.dart';
+import 'package:ai_realm/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -22,5 +23,12 @@ class myDialog {
   static void error(String msg) {
     Get.snackbar("Error", msg,
         backgroundColor: Colors.redAccent.shade200, colorText: Colors.white);
+  }
+
+  //loading
+  static void showLoading() {
+    Get.dialog(Center(
+      child: CustomLoading(),
+    ));
   }
 }

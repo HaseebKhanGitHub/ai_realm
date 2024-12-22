@@ -3,8 +3,11 @@ import 'package:ai_realm/helper/myDialog.dart';
 import 'package:ai_realm/widgets/custom_loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stability_image_generation/stability_image_generation.dart';
+import 'dart:io'; // For working with files
+import 'package:path_provider/path_provider.dart';
 
 class ImageFeature extends StatefulWidget {
   const ImageFeature({super.key});
@@ -125,7 +128,7 @@ class _ImageFeatureState extends State<ImageFeature> {
             flex: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              width: double.infinity,
+              width: 150,
               child: ElevatedButton(
                 onPressed: () {
                   String query = _queryController.text; // Get the input text
@@ -144,7 +147,7 @@ class _ImageFeatureState extends State<ImageFeature> {
                   // Set button background color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        12), // Optional: Rounded corners
+                        25), // Optional: Rounded corners
                   ),
                   padding: const EdgeInsets.symmetric(
                       vertical: 16), // Button height adjustment
@@ -160,9 +163,61 @@ class _ImageFeatureState extends State<ImageFeature> {
               ),
             ),
           ),
-          const Spacer(flex: 1),
+          //const Spacer(),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(),
+                /*FloatingActionButton(
+                  onPressed: _downloadImage,
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Icon(
+                    Icons.save_alt_rounded,
+                    color: Colors.white,
+                  ),
+                ),*/
+              ],
+            ),
+          ))
         ],
       ),
     );
+  }
+
+  void _downloadImage() async {
+    try {
+      // Ensure you have the image bytes from the generated image
+      final imageBytes = await _generate(_queryController.text);
+
+      if (imageBytes != null) {
+        // Get the temporary directory of the device
+        final directory = await getTemporaryDirectory();
+
+        // Define the file path
+        final filePath = '${directory.path}/generated_image.png';
+
+        // Write the bytes to a file
+        final file = File(filePath);
+        await file.writeAsBytes(imageBytes);
+
+        // Save the image to the gallery
+        final success = await GallerySaver.saveImage(filePath);
+
+        if (success == true) {
+          myDialog.success("Image Saved Successfully!");
+        } else {
+          myDialog.error("Failed to save the image.");
+        }
+      } else {
+        myDialog.info("No image to save. Please generate an image first.");
+      }
+    } catch (e) {
+      myDialog.error("An error occurred: $e");
+    }
   }
 }
