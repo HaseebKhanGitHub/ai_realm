@@ -1,4 +1,5 @@
 import 'package:ai_realm/helper/global.dart';
+import 'package:ai_realm/widgets/custom_loading.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -71,7 +72,7 @@ class _ImageFeatureState extends State<ImageFeature> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       // Show loading indicator while waiting for the image
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CustomLoading(),
                       );
                     } else if (snapshot.hasData) {
                       // If data is received, display the generated image
