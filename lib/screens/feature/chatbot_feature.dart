@@ -14,7 +14,6 @@ class ChatController extends GetxController {
     if (controller.text.trim().isEmpty) {
       return myDialog.info("Please write something");
     }
-
     final userInput = controller.text;
 
     // Add user message

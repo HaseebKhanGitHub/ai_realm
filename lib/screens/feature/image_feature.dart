@@ -136,7 +136,7 @@ class _ImageFeatureState extends State<ImageFeature> {
                   } else {
                     myDialog.info(
                         "Please provide some details for image generation");
-                  } ///////////////////////
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
