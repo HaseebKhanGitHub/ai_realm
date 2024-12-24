@@ -89,11 +89,11 @@ class _ImageFeatureState extends State<ImageFeature> {
               : Expanded(
                   flex: 4,
                   child: Container(
-                    height: mq.height * 0.50,
+                    height: mq.size.height * 0.50,
                     alignment: Alignment.center,
                     child: Lottie.asset(
                       'assets/lottie/ai_play.json',
-                      height: mq.height * 0.35,
+                      height: mq.size.height * 0.35,
                     ),
                   ),
                 ),
