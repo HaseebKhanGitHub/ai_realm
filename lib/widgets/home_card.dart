@@ -13,13 +13,14 @@ class home_card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /* Animate.restartOnHotReload = true;*/
+    //    contacthaseebkhan.dev@gmail.com
 
     return InkWell(
       onTap: hometype.onTap,
       child: Card(
         color: Colors.blue.withOpacity(.2),
         elevation: 0,
-        margin: EdgeInsets.only(bottom: mq.height * .02),
+        margin: EdgeInsets.only(bottom: mq.size.height * .02),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: hometype.leftAlign
@@ -29,7 +30,7 @@ class home_card extends StatelessWidget {
                     padding: hometype.padding,
                     child: Lottie.asset(
                       "assets/lottie/${hometype.lottie}",
-                      width: mq.width * .35,
+                      width: mq.size.width * .35,
                     ),
                   ),
                   Spacer(),
@@ -57,7 +58,7 @@ class home_card extends StatelessWidget {
                   ),
                   Spacer(),
                   Container(
-                    width: mq.width * .35,
+                    width: mq.size.width * .35,
                     child: Padding(
                       padding: hometype.padding,
                       child: Lottie.asset(
