@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const appName = 'Ai Assistant';
 
 //media query to store size of device screen
-late Size mq;
+late MediaQueryData mq;
 
 // TODO Chat Gpt Api key OR
 //  Google Gemini API Key - https://aistudio.google.com/app/apikey
