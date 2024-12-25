@@ -22,10 +22,6 @@ class _homeScreenState extends State<homeScreen> {
     try {
       // Attempt to delete the current session (if it exists)
       await appwriteService.account.deleteSession(sessionId: 'current');
-      final user = await appwriteService.account.get();
-      print("User ID: ${user.$id}");
-
-      print("Email: ${user.email}");
     } catch (e) {
       // If no active session, this will fail silently or you can log the error
       print('No active session or error occurred: $e');
