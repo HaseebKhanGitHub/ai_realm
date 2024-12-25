@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-
 import '../helper/global.dart';
 import '../widgets/custom_loading.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,15 +20,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
     //wait for some time on splash & then move to next screen
     Future.delayed(const Duration(seconds: 2), () {
-      Get.off(() =>
-     const homeScreen());
+      Get.off(() => const homeScreen());
     });
   }
 
   @override
   Widget build(BuildContext context) {
     //initializing device size
-    mq = MediaQuery.sizeOf(context);
+    //mq = MediaQuery.sizeOf(context);
 
     return Scaffold(
       //body
@@ -47,10 +44,10 @@ class _SplashScreenState extends State<SplashScreen> {
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Padding(
-                padding: EdgeInsets.all(mq.width * .05),
+                padding: EdgeInsets.all(mq.size.width * .05),
                 child: Image.asset(
                   'assets/images/logo.png',
-                  width: mq.width * .4,
+                  width: mq.size.width * .4,
                 ),
               ),
             ),
